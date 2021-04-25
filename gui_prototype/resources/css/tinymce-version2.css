@@ -1,0 +1,7 @@
+/* This is an update for the version 2 of TinyMCE */
+
+/* This file will be used by our Editor and the simulation to display the static text as well as by TinyMCE */
+
+span {
+	display: inline;
+}
