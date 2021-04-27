@@ -296,6 +296,7 @@ INSERT INTO escaped(bed_id, alcoholic_id, happened_at) VALUES
 
 -- Query 1: 
 -- Select all inspectors that took a given alocoholic A to the sobering-up station at least N times;
+
 SELECT officer.first_name, officer.last_name, COUNT(*) AS capture_number
 FROM (SELECT first_name, last_name, officer_id 
 	  FROM alcoholic JOIN capture on alcoholic.alcoholic_id = capture.alcoholic_id 
@@ -307,6 +308,7 @@ HAVING COUNT(*) >= 0;
 
 -- Query 2:
 -- Select all beds of the sobering-up station where a given alcoholic A has been from date F to date T;
+
 SELECT bed.bed_id, bed.bed_type
 FROM (SELECT *
 	 FROM alcoholic JOIN bed_status ON bed_status.alcoholic_id = alcoholic.alcoholic_id
@@ -342,11 +344,30 @@ JOIN bed on table_4.bed_id = bed.bed_id;
 -- Query 5:
 -- Select all inspectors that took a given alcoholic A to the SU-station less that they let him go;
 
+SELECT table_5_1.officer_id, capture_number, release_number
+FROM (SELECT officer_id, COUNT(*) AS capture_number 
+	  FROM capture 
+	  WHERE alcoholic_id = 2
+	  GROUP BY officer_id) AS table_5_1
+INNER JOIN (SELECT officer_id, COUNT(*) AS release_number 
+	  FROM released 
+	  WHERE alcoholic_id = 2
+	  GROUP BY officer_id) AS TABLE_5_2
+ON table_5_1.officer_id = table_5_2.officer_id
+WHERE capture_number < release_number;
+
 -- Query 6:
 -- Select all inspectors that took at least N distinct alcoholics in a given period F to T;
 
+SELECT capture.officer_id, COUNT(DISTINCT capture.alcoholic_id) AS distinct_alcoholics
+FROM capture
+WHERE capture.caught_at >= '2014-01-01 00:00:00' AND capture.caught_at <= '2015-01-01 00:00:00'
+GROUP BY capture.officer_id
+HAVING COUNT(DISTINCT capture.alcoholic_id) >= 2;
+
 -- Query 7:
 -- Select all alcoholics that were taken to the SU-station at least N times in a given period F to T;
+
 SELECT table_7.first_name, table_7.last_name, COUNT(*)
 FROM (SELECT * 
 	  FROM alcoholic JOIN capture ON alcoholic.alcoholic_id = capture.alcoholic_id
@@ -367,11 +388,13 @@ HAVING COUNT(*) >= 1;
 
 -- Query 10:
 -- Select total number of times alcoholics escaped from the given SU-station;
+
 SELECT table_10.bed_id, COUNT(*)
 FROM (SELECT *
 	 FROM alcoholic JOIN escaped ON alcoholic.alcoholic_id = escaped.alcoholic_id
 	  WHERE escaped.bed_id = 1) AS table_10
 GROUP BY table_10.bed_id;
+
 -- Query 11:
 -- Select beds in decsending order considering the average number of faints for all alcoholics that were taken 
 -- in a given period F to T by a given inspector I;
