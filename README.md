@@ -1,6 +1,6 @@
 # Sobering-up 
 
-Welcome to sobering-up project!
+Welcome to Sobering-up project!
 
 
 ## Description
