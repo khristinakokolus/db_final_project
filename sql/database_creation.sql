@@ -12,7 +12,13 @@
 -- DROP TABLE alcoholic;
 -- DROP TABLE incident;
 
+-- creating database
 
+CREATE DATABASE sobering_up_station;
+
+--creating all tables and filling it with data
+
+-- table that contains information about alcoholic
 CREATE TABLE alcoholic (
   alcoholic_id SERIAL PRIMARY KEY,
   first_name VARCHAR(20) NOT NULL,
@@ -32,7 +38,13 @@ INSERT INTO alcoholic(first_name, last_name, created_at) VALUES
 	('David', 'Johnson', '2014-04-12 13:30:12'),
 	('Luke', 'Williams', '2014-04-08 10:05:47'),
 	('Leo', 'Jones', '2014-02-11 08:41:29');
+	
+-- creating an index to quickly to find information about alcoholic using first_name and last_name
+	
+CREATE INDEX alcoholic_idx
+	ON alcoholic(first_name, last_name);
 
+-- table that contains information about officer
 CREATE TABLE officer (
   officer_id SERIAL PRIMARY KEY,
   first_name VARCHAR(20) NOT NULL,
@@ -53,9 +65,12 @@ INSERT INTO officer(first_name, last_name, created_at) VALUES
 	('Bennett', 'Young', '2013-02-20 03:48:17'),
 	('George', 'Allen', '2013-02-28 09:51:23');
 
+-- creating an index to quickly to find information about officer using first_name and last_name
+
 CREATE INDEX officer_idx
 	ON officer(first_name, last_name);
 
+-- table that contains information about alcohol
 CREATE TABLE alcohol (
   alco_id SERIAL PRIMARY KEY,
   title VARCHAR(20) UNIQUE NOT NULL,
@@ -77,9 +92,12 @@ INSERT INTO alcohol(title, kind, created_at) VALUES
 	('Bertoux', 'brandy', '2012-03-06 19:44:01'),
 	('Patrón Silver', 'tequila', '2012-03-15 20:54:01');
 
-CREATE INDEX alcohol_idx
-	ON alcohol(title, kind);
+-- creating an index to quickly to find information about alcohol using its title
 
+CREATE INDEX alcohol_idx
+	ON alcohol(title);
+	
+-- table that contains information about beds
 CREATE TABLE bed (
   bed_id SERIAL PRIMARY KEY,
   bed_type VARCHAR(20),
@@ -100,6 +118,40 @@ INSERT INTO bed(bed_type, created_at) VALUES
 	('bunk', '2011-03-12 08:36:32'),
 	('single','2011-02-14 18:54:52');
 
+-- table that contains information about the groups of alcoholics	
+CREATE TABLE trailed (
+  trailed_id SERIAL PRIMARY KEY,
+  incident_id INT,
+  alcoholic_id INT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY(incident_id) REFERENCES incident(incident_id),
+  FOREIGN KEY(alcoholic_id) REFERENCES alcoholic(alcoholic_id)
+);
+
+INSERT INTO trailed(incident_id, alcoholic_id) VALUES
+	(1, 1),
+	(2, 2),
+	(2, 3),
+	(3, 1),
+	(3, 2),
+	(3, 3),
+	(4, 4),
+	(5, 5),
+	(6, 6),
+	(6, 7),
+	(7, 4),
+	(7, 5),
+	(7, 6),
+	(7, 8),
+	(8, 8),
+	(8, 9),
+	(8, 10),
+	(9, 9),
+	(10, 7),
+	(10, 10);
+
+-- table that contains the information incidents of drinking alcohol
 CREATE TABLE incident (
   incident_id SERIAL PRIMARY KEY,
   additional_info TEXT,
@@ -119,6 +171,7 @@ INSERT INTO incident(additional_info, created_at) VALUES
 	('lonely boy', '2014-04-08 15:42:01'), 
 	('two boolies', '2014-03-08 23:51:49'); 
 	
+-- table that contains more detailed information about drinking alcohol
 CREATE TABLE incident_info (
   incident_info_id SERIAL PRIMARY KEY,
   alco_id INT,
@@ -142,6 +195,7 @@ INSERT INTO incident_info(alco_id, incident_id, drank_at) VALUES
 	(6, 9, '2014-04-08 15:42:01'),
 	(5, 10, '2014-03-08 23:51:49');
 
+-- table that contains information about the capture of th alcoholic by the officer
 CREATE TABLE capture (
   capture_id SERIAL PRIMARY KEY,
   officer_id INT,
@@ -167,38 +221,12 @@ INSERT INTO capture(officer_id, alcoholic_id, bed_id, caught_at) VALUES
 	(2, 9, 9, '2014-04-08 09:55:58'),
 	(10, 10, 3, '2014-09-24 05:56:02');
 
-CREATE TABLE trailed (
-  trailed_id SERIAL PRIMARY KEY,
-  incident_id INT,
-  alcoholic_id INT,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY(incident_id) REFERENCES incident(incident_id),
-  FOREIGN KEY(alcoholic_id) REFERENCES alcoholic(alcoholic_id)
-);
+-- creating an index to quickly to find information about the date of capture
 
-INSERT INTO trailed(incident_id, alcoholic_id) VALUES
-	(1, 1),
-	(2, 2),
-	(2, 3),
-	(3, 1),
-	(3, 2),
-	(3, 3),
-	(4, 4),
-	(5, 5),
-	(6, 6),
-	(6, 7)
-	(7, 4),
-	(7, 5),
-	(7, 6),
-	(7, 8),
-	(8, 8),
-	(8, 9),
-	(8, 10),
-	(9, 9),
-	(10, 7),
-	(10, 10);
+CREATE INDEX capture_idx
+	ON capture(caught_at);
 
+-- table that contains iformation about alcoholics' loss of consciousness
 CREATE TABLE fainted (
   fainted_id SERIAL PRIMARY KEY,
   alcoholic_id INT,
@@ -219,7 +247,13 @@ INSERT INTO fainted(alcoholic_id, happened_at) VALUES
 	(4,'2014-03-17 04:20:00'),
 	(9,'2014-04-09 07:02:12'),
 	(8,'2014-04-13 04:30:12');
+	
+-- creating an index to quickly to find information about the date of loss of consciousness
 
+CREATE INDEX fainted_idx
+	ON fainted(happened_at);
+
+-- table that contains the information about the status of the bed
 CREATE TABLE bed_status (
   bed_staus_id SERIAL PRIMARY KEY,
   bed_id INT,
@@ -257,6 +291,7 @@ INSERT INTO bed_status(bed_id, alcoholic_id, officer_id, stay_start, stay_end) V
 	(10, 9, 7, '2014-09-24 06:03:41', '2014-11-07 05:28:37'),
 	(3, 10, 10, '2014-09-24 06:03:41', '2014-11-18 10:30:37');
 
+-- table that contains information about the release of the alcoholic
 CREATE TABLE released (
   released_id SERIAL PRIMARY KEY,
   bed_id INT,
@@ -279,7 +314,8 @@ INSERT INTO released(bed_id, alcoholic_id, officer_id, happened_at) VALUES
 	(7, 7, 6, '2014-06-07 02:12:19'),
 	(8, 8, 10, '2014-05-01 14:18:49'),
 	(9, 9, 2, '2014-07-24 06:31:19');
-
+	
+-- table that contains the information about the escape of the alcoholic
 CREATE TABLE escaped (
   escaped_id SERIAL PRIMARY KEY,
   bed_id INT,
