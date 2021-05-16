@@ -371,3 +371,16 @@ INSERT INTO escaped(bed_id, alcoholic_id, happened_at) VALUES
 	(7, 9, '2014-06-08 10:55:58'),
 	(3, 3, '2014-06-15 14:15:25'),
 	(10, 6, '2014-06-25 22:35:53');
+
+-- table that contains information fight between alcoholics
+CREATE TABLE alcoholics_fight (
+  fight_id SERIAL PRIMARY KEY,
+  aggressor_id INT,
+  victim_id INT,
+  winner_id INT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  FOREIGN KEY(aggressor_id) REFERENCES alcoholic(alcoholic_id),
+  FOREIGN KEY(victim_id) REFERENCES alcoholic(alcoholic_id),
+  FOREIGN KEY(winner_id) REFERENCES alcoholic(alcoholic_id)
+);
