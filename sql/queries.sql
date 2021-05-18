@@ -165,3 +165,23 @@ GROUP BY table_10.bed_id;
 -- Query 12:
 -- Select all alcoholic drinks in descending order considering the total number of alcoholics that drank
 -- those drinks with a given alcoholic A in a given period F to T;
+
+-- Query 13(Additional):
+-- Select top 10 most dangerous alcoholics that start the most wights
+CREATE VIEW Most_aggressive AS
+SELECT alc.first_name, alc.last_name, count(*) as fights
+FROM alcoholics_fight as alc_f INNER JOIN alcoholic as alc
+ON alc_f.aggressor_id = alc.alcoholic_id 
+GROUP BY alc.alcoholic_id
+ORDER BY fights DESC
+LIMIT 10;
+
+-- Query 14(Additional):
+-- Select top 10 most skillfil alcoholics that win most of the fights
+CREATE VIEW Best_fighters AS
+SELECT alc.first_name, alc.last_name, count(*) as fights_won
+FROM alcoholics_fight as alc_f INNER JOIN alcoholic as alc
+ON alc_f.winner_id = alc.alcoholic_id 
+GROUP BY alc.alcoholic_id
+ORDER BY fights DESC
+LIMIT 10;

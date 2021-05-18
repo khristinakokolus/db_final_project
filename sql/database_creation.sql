@@ -439,7 +439,7 @@ CREATE TABLE alcoholics_fight (
   victim_id INT,
   winner_id INT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY(aggressor_id) REFERENCES alcoholic(alcoholic_id),
   FOREIGN KEY(victim_id) REFERENCES alcoholic(alcoholic_id),
   FOREIGN KEY(winner_id) REFERENCES alcoholic(alcoholic_id)
