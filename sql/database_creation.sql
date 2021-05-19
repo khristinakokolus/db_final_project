@@ -50,7 +50,7 @@ INSERT INTO alcoholic(first_name, last_name, created_at) VALUES
     ('Jace', 'Harrison', '2015-01-30 08:41:29'),
  	('Luke', 'Quinn', '2015-02-15 08:01:00'),
     ('Gabriel', 'Harper', '2015-02-24 17:25:44'),
-    ('Anthony', 'Hunter', '2015-02-30 14:28:25'),
+    ('Anthony', 'Hunter', '2015-02-28 14:28:25'),
     ('Hudson', 'Avery', '2015-03-16 02:27:03'),
     ('Charles', 'Madison', '2015-03-19 15:41:35'),
     ('Adrian', 'Morgan', '2015-03-25 21:44:58'),
