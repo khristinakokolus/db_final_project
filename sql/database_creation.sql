@@ -1,7 +1,7 @@
 -- DROPING ALL TABLES:
 -- DROP TABLE capture;
-DROP TABLE escaped;
-DROP TABLE released;
+-- DROP TABLE escaped;
+-- DROP TABLE released;
 -- DROP TABLE fainted;
 -- DROP TABLE incident_info;
 -- DROP TABLE bed_status;
@@ -268,8 +268,8 @@ CREATE TABLE trailed (
   alcoholic_id INT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY(incident_id) REFERENCES incident(incident_id),
-  FOREIGN KEY(alcoholic_id) REFERENCES alcoholic(alcoholic_id)
+  FOREIGN KEY(incident_id) REFERENCES incident(incident_id) ON DELETE CASCADE,
+  FOREIGN KEY(alcoholic_id) REFERENCES alcoholic(alcoholic_id) ON DELETE CASCADE
 );
 
 INSERT INTO trailed(incident_id, alcoholic_id) VALUES
@@ -373,8 +373,8 @@ CREATE TABLE incident_info (
   drank_at TIMESTAMP NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY(alco_id) REFERENCES alcohol(alco_id),
-  FOREIGN KEY(incident_id) REFERENCES incident(incident_id)
+  FOREIGN KEY(alco_id) REFERENCES alcohol(alco_id) ON DELETE CASCADE,
+  FOREIGN KEY(incident_id) REFERENCES incident(incident_id) ON DELETE CASCADE
 );
 
 INSERT INTO incident_info(alco_id, incident_id, drank_at) VALUES 
@@ -461,9 +461,9 @@ CREATE TABLE capture (
   caught_at TIMESTAMP NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY(alcoholic_id) REFERENCES alcoholic(alcoholic_id),
-  FOREIGN KEY(officer_id) REFERENCES officer(officer_id),
-  FOREIGN KEY(bed_id) REFERENCES bed(bed_id)
+  FOREIGN KEY(alcoholic_id) REFERENCES alcoholic(alcoholic_id) ON DELETE CASCADE,
+  FOREIGN KEY(officer_id) REFERENCES officer(officer_id) ON DELETE CASCADE,
+  FOREIGN KEY(bed_id) REFERENCES bed(bed_id) ON DELETE CASCADE
 );
 
 INSERT INTO capture(officer_id, alcoholic_id, bed_id, caught_at) VALUES
@@ -571,8 +571,8 @@ CREATE TABLE fainted (
   happened_at TIMESTAMP NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY(alcoholic_id) REFERENCES alcoholic(alcoholic_id),
-  FOREIGN KEY(bed_id) REFERENCES bed(bed_id)
+  FOREIGN KEY(alcoholic_id) REFERENCES alcoholic(alcoholic_id) ON DELETE CASCADE,
+  FOREIGN KEY(bed_id) REFERENCES bed(bed_id) ON DELETE CASCADE
 );
 
 INSERT INTO fainted(alcoholic_id, bed_id, happened_at) VALUES
@@ -672,9 +672,9 @@ CREATE TABLE bed_status (
   stay_end TIMESTAMP,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY(bed_id) REFERENCES bed(bed_id),
-  FOREIGN KEY(alcoholic_id) REFERENCES alcoholic(alcoholic_id),
-  FOREIGN KEY(officer_id) REFERENCES officer(officer_id)
+  FOREIGN KEY(bed_id) REFERENCES bed(bed_id) ON DELETE CASCADE,
+  FOREIGN KEY(alcoholic_id) REFERENCES alcoholic(alcoholic_id) ON DELETE CASCADE,
+  FOREIGN KEY(officer_id) REFERENCES officer(officer_id) ON DELETE CASCADE
 );
 
 INSERT INTO bed_status(bed_id, alcoholic_id, officer_id, stay_start, stay_end) VALUES
@@ -779,9 +779,9 @@ CREATE TABLE released (
   happened_at TIMESTAMP NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY(bed_id) REFERENCES bed(bed_id),
-  FOREIGN KEY(alcoholic_id) REFERENCES alcoholic(alcoholic_id),
-  FOREIGN KEY(officer_id) REFERENCES officer(officer_id)
+  FOREIGN KEY(bed_id) REFERENCES bed(bed_id) ON DELETE CASCADE,
+  FOREIGN KEY(alcoholic_id) REFERENCES alcoholic(alcoholic_id) ON DELETE CASCADE,
+  FOREIGN KEY(officer_id) REFERENCES officer(officer_id) ON DELETE CASCADE
 );
 
 INSERT INTO released(bed_id, alcoholic_id, officer_id, happened_at) VALUES
@@ -837,8 +837,8 @@ CREATE TABLE escaped (
   happened_at TIMESTAMP NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY(bed_id) REFERENCES bed(bed_id),
-  FOREIGN KEY(alcoholic_id) REFERENCES alcoholic(alcoholic_id)	
+  FOREIGN KEY(bed_id) REFERENCES bed(bed_id) ON DELETE CASCADE,
+  FOREIGN KEY(alcoholic_id) REFERENCES alcoholic(alcoholic_id) ON DELETE CASCADE
 );
 
 INSERT INTO escaped(bed_id, alcoholic_id, happened_at) VALUES
@@ -899,9 +899,9 @@ CREATE TABLE alcoholics_fight (
   winner_id INT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY(aggressor_id) REFERENCES alcoholic(alcoholic_id),
-  FOREIGN KEY(victim_id) REFERENCES alcoholic(alcoholic_id),
-  FOREIGN KEY(winner_id) REFERENCES alcoholic(alcoholic_id)
+  FOREIGN KEY(aggressor_id) REFERENCES alcoholic(alcoholic_id) ON DELETE CASCADE,
+  FOREIGN KEY(victim_id) REFERENCES alcoholic(alcoholic_id) ON DELETE CASCADE,
+  FOREIGN KEY(winner_id) REFERENCES alcoholic(alcoholic_id) ON DELETE CASCADE
 );
 
 INSERT INTO alcoholics_fight(aggressor_id, victim_id, winner_id, created_at) VALUES
