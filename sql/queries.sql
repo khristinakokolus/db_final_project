@@ -189,13 +189,14 @@ GROUP BY month, year
 
 -- For example:
 -- Date = from 2014-01-01 00:00:00 and 2015-01-01 00:00:00
+-- Officer = George Allen
 
 -- Works well
-SELECT bed_id
-FROM fainted
-WHERE fainted.happened_at >= '2014-01-01 00:00:00' AND fainted.happened_at <= '2015-01-01 00:00:00'
-GROUP BY bed_id
-ORDER BY COUNT(alcoholic_id) DESC;
+SELECT fainted.bed_id, COUNT(*) AS avarage_num_faints
+FROM fainted JOIN capture ON fainted.bed_id = capture.bed_id JOIN officer ON officer.officer_id = capture.officer_id
+WHERE fainted.happened_at >= '2014-01-01 00:00:00' AND fainted.happened_at <= '2015-01-01 00:00:00' and officer.first_name = 'George' and officer.last_name = 'Allen'
+GROUP BY fainted.bed_id
+ORDER BY COUNT(fainted.alcoholic_id) DESC;
 
 -- Query 12:
 -- Select all alcoholic drinks in descending order considering the total number of alcoholics that drank
@@ -206,13 +207,14 @@ ORDER BY COUNT(alcoholic_id) DESC;
 -- Date = from 2014-01-01 00:00:00 to 2015-01-02 00:00:00
 
 -- Works well
-SELECT table_12_1.title
+SELECT table_12_1.title, COUNT(*) AS num_of_alcoholics
 FROM(SELECT alcohol.title, incident_info.incident_id FROM alcohol JOIN incident_info ON alcohol.alco_id = incident_info.alco_id) AS table_12_1
 JOIN (SELECT trailed.incident_id, trailed.alcoholic_id FROM incident_info JOIN trailed ON incident_info.incident_id = trailed.incident_id  WHERE incident_info.drank_at >= '2014-01-01 00:00:00' AND incident_info.drank_at <= '2015-01-02 00:00:00') As table_12_2 ON
 table_12_1.incident_id = table_12_2.incident_id
 JOIN(SELECT trailed.incident_id, alcoholic.alcoholic_id FROM trailed JOIN alcoholic ON trailed.alcoholic_id = alcoholic.alcoholic_id WHERE alcoholic.first_name = 'Matthew' AND alcoholic.last_name = 'Cohen') AS table_12_3
 ON table_12_3.incident_id = table_12_1.incident_id
-ORDER BY COUNT(table_12_3.incident_id) DESC; 
+GROUP BY table_12_1.title
+ORDER BY COUNT(table_12_3.incident_id) DESC;
 
 
 -- Query 13(Additional):
