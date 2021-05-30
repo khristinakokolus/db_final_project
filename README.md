@@ -30,7 +30,7 @@ git clone https://github.com/khristinakokolus/db_final_project.git
 You can run all selects in tab ```search```
 ![image](https://user-images.githubusercontent.com/54356826/120109128-d04ae800-c170-11eb-80c3-acd9c96cd5c4.png)
 You can overview all tables and add new values for them in tab ```tables```
-![image](https://user-images.githubusercontent.com/54356826/120109172-fc666900-c170-11eb-882b-0bf5c48886ff.png)
+![image](https://user-images.githubusercontent.com/54356826/120109298-7dbdfb80-c171-11eb-9454-1b28997611dc.png)
 ![image](https://user-images.githubusercontent.com/54356826/120109194-1011cf80-c171-11eb-92c9-ee0ee9d11fc5.png)
 Additional: You can watch table of honors in tab ```honors```
 ![image](https://user-images.githubusercontent.com/54356826/120109178-038d7700-c171-11eb-96aa-9c020c815ff8.png)
